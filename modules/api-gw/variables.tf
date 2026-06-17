@@ -6,7 +6,6 @@ variable "api_gateway_name" {
 variable "path_part" {
     type = string
     description = "path that api supports"
-  
 }
 
 variable "uri" {

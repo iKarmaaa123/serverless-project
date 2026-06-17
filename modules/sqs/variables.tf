@@ -1,7 +1,3 @@
-variable "sqs_queue_name" {
-    type = string
-    description = "Name of sqs queue"
-}
 
 variable "deadletter_queue_name" {
     type = string
@@ -26,9 +22,4 @@ variable "message_retention_seconds" {
 variable "receive_wait_time_seconds" {
     type = number
     description = "Number of seconds to wait before application can consume messages from queue"
-}
-
-variable "max_receive_count" {
-    type = number
-    description = "Number of messages to replay back to source queue"
 }

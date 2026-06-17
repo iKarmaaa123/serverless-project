@@ -3,9 +3,14 @@ variable "role" {
   description = "IAM role for lambda function"
 }
 
-variable "function_name_dynamdb" {
+variable "dynamodb_lambda_function_name" {
   type = string
-  description = "Name of lambda function for dynamodb lambda function"
+  description = "Name of dynamodb lambda function"
+}
+
+variable "s3_lambda_function_name" {
+  type = string
+  description = "Name of s3 lambda function"
 }
 
 variable "method_type" {
@@ -13,14 +18,24 @@ variable "method_type" {
   description = "Method of archiving fie"
 }
 
-variable "handler" {
+variable "dynamodb_function_handler" {
   type = string
-  description = "Function entry point in your code"
+  description = "DynamoDB lambda function's entry point"
+}
+
+variable "s3_function_handler" {
+  type = string
+  description = "S3 lambda function's entry point"
 }
 
 variable "runtime" {
   type = string
   description = "Runtime the lambda is going to use when executing code"
+}
+
+variable "timeout" {
+  type = number
+  description = "Value for when lambda function should stop running"
 }
 
 variable "apigateway_statement_id" {

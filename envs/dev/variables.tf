@@ -13,11 +13,6 @@ variable "path_part" {
     description = "path that api supports"
 }
 
-# variable "uri" {
-#     type = string
-#     description = "uri of lambda function to trigger when api gateway receives POST request"
-# }
-
 variable "http_method" {
     type = string
     description = "http method that rest api supports" 
@@ -73,24 +68,54 @@ variable lambda_execution_role_name {
   description = "Lambda execution role name"
 }
 
-variable lambda_logging_policy_name {
+variable logging_policy_name {
   type        = string
-  description = "Policy name for logging iam policy for lambda execution role"
+  description = "Policy name for logging iam policy"
 }
 
-variable lambda_dynamodb_policy_name {
+variable dynamodb_policy_name {
   type        = string
-  description = "Policy name for dynamodb iam policy for lambda execution role"
+  description = "Policy name for dynamodb iam policy"
 }
 
-# variable "role" {
-#   type = string
-#   description = "IAM role for lambda function"
-# }
+variable "dynamodb_streams_policy_name" {
+  type        = string
+  description = "Name for DynamoDB streams IAM policy"
+}
 
-variable "function_name_dynamdb" {
+variable s3_policy_name {
+  type        = string
+  description = "Policy name for S3 iam policy"
+}
+
+variable "eventbridge_policy_name" {
+  type        = string
+  description = "Policy name for eventbridge IAM policy for lambda execution role"
+}
+
+variable "lambda_dynamodb_role_name" {
   type = string
-  description = "Name of lambda function for dynamodb lambda function"
+  description = "Name for lambda dynamodb function role name"
+}
+
+variable "lambda_s3_role_name" {
+  type = string
+  description = "Name for lambda s3 function role name"
+}
+
+variable "cloudwatch_log_group_arn" {
+  type = string
+  description = "Arn for CloudWatch log group"
+}
+
+variable "dynamodb_lambda_function_name" {
+  type = string
+  description = "Name of dynamodb lambda function"
+}
+
+variable "s3_lambda_function_name" {
+  type = string
+  description = "Name of s3 lambda function"
 }
 
 variable "method_type" {
@@ -98,14 +123,24 @@ variable "method_type" {
   description = "Method of archiving file"
 }
 
-variable "handler" {
+variable "dynamodb_function_handler" {
   type = string
-  description = "Function entry point in your code"
+  description = "DynamoDB lambda function's entry point"
+}
+
+variable "s3_function_handler" {
+  type = string
+  description = "S3 lambda function's entry point"
 }
 
 variable "runtime" {
   type = string
   description = "Runtime the lambda is going to use when executing code"
+}
+
+variable "timeout" {
+  type = number
+  description = "Value for when lambda function should stop running"
 }
 
 variable "apigateway_statement_id" {
@@ -156,4 +191,54 @@ variable "receive_wait_time_seconds" {
 variable "max_receive_count" {
     type = number
     description = "Number of messages to replay back to source queue"
+}
+
+variable "event_bus_name" {
+    type = string
+    description = "Name of event bus"
+}
+
+variable "event_bus_description" {
+    type = string
+    description = "Description for event bus"
+}
+
+variable "event_rule_name" {
+    type = string
+    description = "Name of event rule"
+}
+
+variable "event_rule_description" {
+    type = string
+    description = "Description of rule event"
+}
+
+variable "event_rule_name" {
+    type = string
+    description = "Name of event rule"
+}
+
+variable "event_rule_description" {
+    type = string
+    description = "Description of rule event"
+}
+
+variable "source" {
+    type = string
+    description = "source of where the event came from"
+}
+
+variable "detail_type" {
+    type = string
+    description = "What type of event has happened"
+}
+
+variable "eventbridge_pipe_name" {
+    type = string
+    description = "Name of eventbridge pipe" 
+}
+
+variable "bucket_name" {
+    type = string
+    description = "Name of S3 bucket"
 }

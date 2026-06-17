@@ -1,5 +1,5 @@
-resource "aws_iam_role" "lambda_execution_role" {
-  name = var.lambda_execution_role_name
+resource "aws_iam_role" "lambda_dynamodb_execution_role" {
+  name = var.lambda_dynamodb_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -15,8 +15,42 @@ resource "aws_iam_role" "lambda_execution_role" {
   })
 }
 
-resource "aws_iam_policy" "lambda_logging_policy" {
-  name        = var.lambda_logging_policy_name
+resource "aws_iam_role" "lambda_s3_execution_role" {
+  name = var.lambda_s3_role_name
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "eventbridge_pipes_role" {
+  name = "eventbridge-pipes-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "pipes.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "logging_policy" {
+  name        = var.logging_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -28,14 +62,14 @@ resource "aws_iam_policy" "lambda_logging_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = ["arn:aws:logs:*:*:*"]
+        Resource = [var.cloudwatch_log_group_arn]
       }
     ]
   })
 }
 
-resource "aws_iam_policy" "lambda_dynamodb_policy" {
-  name        = var.lambda_dynamodb_policy_name
+resource "aws_iam_policy" "dynamodb_lambda_policy" {
+  name        = var.dynamodb_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -44,23 +78,100 @@ resource "aws_iam_policy" "lambda_dynamodb_policy" {
         Effect = "Allow"
         Action = [
           "dynamodb:GetItem",
-          "dynamodb:PutItem",
+          "dynamodb:PutItem"
         ]
-        Resource = [var.lambda_function_arn]
+        Resource = [var.dynamodb_table_arn]
       }
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_logs" {
-  role       = aws_iam_role.lambda_execution_role.name
-  policy_arn = aws_iam_policy.lambda_logging_policy.arn
+resource "aws_iam_policy" "dynamodb_streams_policy" {
+  name        = var.dynamodb_streams_policy_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+        "dynamodb:DescribeStream",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:ListStreams"
+        ]
+        Resource = [var.dynamodb_table_arn]
+      }
+    ]
+  })
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_dynamodb" {
-  role       = aws_iam_role.lambda_execution_role.name
-  policy_arn = aws_iam_policy.lambda_logging_policy.arn
+resource "aws_iam_policy" "s3_policy" {
+  name        = var.s3_policy_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject"
+        ]
+        Resource = [var.s3_bucket_arn]
+      }
+    ]
+  })
 }
 
+resource "aws_iam_policy" "eventbridge_policy" {
+  name        = var.eventbridge_policy_name
 
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "events:PutEvents"
+        ]
+        Resource = [var.eventbus_arn]
+      }
+    ]
+  })
+}
 
+resource "aws_iam_role_policy_attachment" "logging_policy_attchment_for_dynamodb_lambda_role" {
+  role       = aws_iam_role.lambda_dynamodb_execution_role.name
+  policy_arn = aws_iam_policy.logging_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "logging_policy_attchment_for_s3_lambda_role" {
+  role       = aws_iam_role.lambda_s3_execution_role.name
+  policy_arn = aws_iam_policy.logging_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "dynamodb_policy_attachment" {
+  role       = aws_iam_role.lambda_dynamodb_execution_role.name
+  policy_arn = aws_iam_policy.dynamodb_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
+  role       = aws_iam_role.lambda_s3_execution_role.name
+  policy_arn = aws_iam_policy.s3_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "eventbridge_policy_attachment" {
+  role       = aws_iam_role.lambda_s3_execution_role.name
+  policy_arn = aws_iam_policy.s3_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "dynamodb_streams_attachment" {
+  role       = aws_iam_role.eventbridge_pipes_role.name
+  policy_arn = aws_iam_policy.dynamodb_streams_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "eventbridge_policy_attachment" {
+  role       = aws_iam_role.eventbridge_pipes_role.name
+  policy_arn = aws_iam_policy.eventbridge_policy.arn
+}

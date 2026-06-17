@@ -1,22 +1,23 @@
 data "archive_file" "lambda_dynamodb" {
   type        = var.method_type
   source_file = "${path.module}/functions/dynamodb.py"
-  output_path = "${path.module}/functions/function.zip"
+  output_path = "${path.module}/archive-files/dynamodb_function.zip"
 }
 
-# data "archive_file" "lambda_s3" {
-#   type        = var.method_type
-#   source_file = "${path.module}/functions"
-#   output_path = "${path.module}/lambda_function.zip"
-# }
+data "archive_file" "lambda_s3" {
+  type        = var.method_type
+  source_file = "${path.module}/functions/s3.py"
+  output_path = "${path.module}/archive-files/s3_function.zip"
+}
 
 resource "aws_lambda_function" "lambda_dynamodb" {
   filename      = data.archive_file.lambda_dynamodb.output_path
-  function_name = var.function_name_dynamdb
+  function_name = var.dynamodb_lambda_function_name
   role          = var.role
-  handler       = var.handler
+  handler       = var.dynamodb_function_handler
   code_sha256   = data.archive_file.lambda_dynamodb.output_base64sha256
   runtime = var.runtime
+  timeout = var.timeout
 }
 
 resource "aws_lambda_permission" "allow_apigateway" {
@@ -27,12 +28,12 @@ resource "aws_lambda_permission" "allow_apigateway" {
   source_arn    = var.source_arn
 }
 
-# resource "aws_lambda_function" "lambda_s3" {
-#   filename      = data.archive_file.example.output_path
-#   function_name = "dynamodb_lambda_function"
-#   role          = aws_iam_role.example.arn
-#   handler       = "index.handler"
-#   code_sha256   = data.archive_file.example.output_base64sha256
-
-#   runtime = "python3.14"
-# }
+resource "aws_lambda_function" "lambda_s3" {
+  filename      = data.archive_file.lambda_s3.output_paths
+  function_name = var.s3_lambda_function_name
+  role          = aws_iam_role.example.arn
+  handler       = var.s3_function_handler
+  code_sha256   = data.archive_file.lambda_s3.output_base64sha256
+  runtime = var.runtime
+  timeout = var.timeout
+}

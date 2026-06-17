@@ -1,19 +1,54 @@
-variable lambda_execution_role_name {
-  type        = string
-  description = "Lambda execution role name"
-}
-
-variable lambda_logging_policy_name {
-  type        = string
-  description = "Policy name for logging iam policy for lambda execution role"
-}
-
-variable lambda_dynamodb_policy_name {
-  type        = string
-  description = "Policy name for dynamodb iam policy for lambda execution role"
-}
-
-variable "lambda_function_arn" {
+variable "cloudwatch_log_group_arn" {
   type = string
-  description = "function arn for lambda"
+  description = "Arn for CloudWatch log group"
+}
+
+variable "dynamodb_table_arn" {
+  type = string
+  description = "Arn for DynamoDB table"
+}
+
+variable "s3_bucket_arn" {
+  type = string
+  description = "Arn for S3 bucket"
+}
+
+variable "eventbus_arn" {
+  type = string
+  description = "Arn for eventbus"
+}
+
+variable "logging_policy_name" {
+  type        = string
+  description = "Policy name for logging IAM policy for lambda execution role"
+}
+
+variable "dynamodb_policy_name" {
+  type        = string
+  description = "Policy name for DynamoDB IAM policy for lambda execution role"
+}
+
+variable "dynamodb_streams_policy_name" {
+  type        = string
+  description = "Name for DynamoDB streams IAM policy"
+}
+
+variable "s3_policy_name" {
+  type        = string
+  description = "Policy name for S3 IAM policy for lambda execution role"
+}
+
+variable "eventbridge_policy_name" {
+  type        = string
+  description = "Policy name for eventbridge IAM policy for lambda execution role"
+}
+
+variable "lambda_dynamodb_role_name" {
+  type = string
+  description = "Name for lambda dynamodb function role name"
+}
+
+variable "lambda_s3_role_name" {
+  type = string
+  description = "Name for lambda s3 function role name"
 }
