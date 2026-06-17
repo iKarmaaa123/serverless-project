@@ -1,11 +1,11 @@
 env = "dev"
 api_gateway_name = "username-api"
-path_part = "username/{user}"
+path_part = "create_user/{user}"
 http_method = "POST"
 authorization = "NONE"
 integration_input_type = "AWS_PROXY"
 stage_name = "dev"
-dynamodb_table_name = "username-dynamodb-table"
+dynamodb_table_name = "users-table"
 hash_key = "username"
 billing_mode = "PAY_PER_REQUEST"
 stream_enabled = true
