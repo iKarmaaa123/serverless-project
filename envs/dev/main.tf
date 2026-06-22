@@ -7,7 +7,6 @@ module "api-gateway" {
     authorization = var.authorization
     integration_input_type = var.integration_input_type
     stage_name = var.stage_name
-    depends_on = [module.lambda, module.dynamodb]
 }
 
 module "iam" {
@@ -27,7 +26,8 @@ module "iam" {
 
 module "lambda" {
     source = "../../modules/lambda"
-    role = module.iam.lambda_execution_iam_role
+    lambda_dynamodb_function_role = module.iam.lambda_dynamodb_execution_iam_role
+    lambda_s3_function_role = module.iam.lambda_s3_execution_iam_role
     runtime = var.runtime
     dynamodb_function_handler = var.dynamodb_function_handler
     s3_function_handler = var.s3_function_handler
@@ -35,11 +35,13 @@ module "lambda" {
     dynamodb_lambda_function_name = var.dynamodb_lambda_function_name
     s3_lambda_function_name = var.s3_lambda_function_name
     apigateway_statement_id = var.apigateway_statement_id
-    apigateway_action = var.apigateway_action
+    eventbridge_statement_id = var.eventbridge_statement_id
+    invoke_action = var.invoke_action
     apigateway_principle = var.apigateway_principle
-    source_arn = module.api-gateway.apigateway_arn
+    eventbridge_principle = var.eventbridge_principle
+    api_gateway_source_arn = module.api-gateway.apigateway_arn
+    event_bus_source_arn = module.eventbridge.eventbridge_arn
     timeout = var.timeout
-    depends_on = [module.iam]
 }
 
 module "dynamodb" {
@@ -59,19 +61,17 @@ module "sqs" {
     deadletter_queue_name = var.deadletter_queue_name
     message_retention_seconds = var.message_retention_seconds
     delay_seconds = var.delay_seconds
-    depends_on = [module.lambda]
 }
 
 module "eventbridge" {
     source = "../../modules/eventbridge"
     event_bus_name = var.event_bus_name
     event_bus_description = var.event_bus_description
-    event_bus_rule_name =  var.event_rule_name
-    event_rule_name = var.event_rule_name
-    event_rule_description = var.event_rule_description
+    event_bus_rule_name = var.event_bus_rule_name
+    eventbridge_source = var.eventbridge_source
+    event_bus_rule_description = var.event_bus_rule_description
     detail_type = var.detail_type
     target_arn_resource = module.lambda.lambda_function_s3_arn
-    depends_on = [module.dynamodb, module.lambda]
     eventbridge_pipe_name = var.eventbridge_pipe_name
     eventbridge_pipe_role = module.iam.eventbridge_pipes_role_arn
     eventbridge_pipe_source = module.dynamodb.dynamodb_stream_arn

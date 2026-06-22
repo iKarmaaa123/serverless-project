@@ -68,7 +68,7 @@ resource "aws_iam_policy" "logging_policy" {
   })
 }
 
-resource "aws_iam_policy" "dynamodb_lambda_policy" {
+resource "aws_iam_policy" "dynamodb_policy" {
   name        = var.dynamodb_policy_name
 
   policy = jsonencode({
@@ -115,8 +115,8 @@ resource "aws_iam_policy" "s3_policy" {
       {
         Effect = "Allow"
         Action = [
-          "s3:PutObject",
-          "s3:GetObject"
+          "s3:GetObject",
+          "s3:PutObject"
         ]
         Resource = [var.s3_bucket_arn]
       }
@@ -157,11 +157,6 @@ resource "aws_iam_role_policy_attachment" "dynamodb_policy_attachment" {
 }
 
 resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
-  role       = aws_iam_role.lambda_s3_execution_role.name
-  policy_arn = aws_iam_policy.s3_policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "eventbridge_policy_attachment" {
   role       = aws_iam_role.lambda_s3_execution_role.name
   policy_arn = aws_iam_policy.s3_policy.arn
 }

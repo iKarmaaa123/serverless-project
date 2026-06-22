@@ -148,12 +148,22 @@ variable "apigateway_statement_id" {
   description = "Statement identifiers"
 }
 
-variable "apigateway_action" {
+variable "eventbridge_statement_id" {
   type = string
-  description = "What lambda action to allow"
+  description = "Statement identifiers"
+}
+
+variable "invoke_action" {
+  type = string
+  description = "What action the resource can perform over the lambda function"
 }
 
 variable "apigateway_principle" {
+  type = string
+  description = "AWS service that is going to invoke lambda function"
+}
+
+variable "eventbridge_principle" {
   type = string
   description = "AWS service that is going to invoke lambda function"
 }
@@ -203,27 +213,17 @@ variable "event_bus_description" {
     description = "Description for event bus"
 }
 
-variable "event_rule_name" {
+variable "event_bus_rule_name" {
     type = string
-    description = "Name of event rule"
+    description = "Name for event bus rule name"
 }
 
-variable "event_rule_description" {
-    type = string
-    description = "Description of rule event"
-}
-
-variable "event_rule_name" {
-    type = string
-    description = "Name of event rule"
-}
-
-variable "event_rule_description" {
+variable "event_bus_rule_description" {
     type = string
     description = "Description of rule event"
 }
 
-variable "source" {
+variable "eventbridge_source" {
     type = string
     description = "source of where the event came from"
 }

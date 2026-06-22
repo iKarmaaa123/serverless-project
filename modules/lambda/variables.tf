@@ -1,6 +1,11 @@
-variable "role" {
+variable "lambda_dynamodb_function_role" {
   type = string
-  description = "IAM role for lambda function"
+  description = "IAM role for lambda dynamodb function"
+}
+
+variable "lambda_s3_function_role" {
+  type = string
+  description = "IAM role for lambda s3 function"
 }
 
 variable "dynamodb_lambda_function_name" {
@@ -43,9 +48,14 @@ variable "apigateway_statement_id" {
   description = "Statement identifiers"
 }
 
-variable "apigateway_action" {
+variable "eventbridge_statement_id" {
   type = string
-  description = "What lambda action to allow"
+  description = "Statement identifiers"
+}
+
+variable "invoke_action" {
+  type = string
+  description = "What action to allow for the resource over the lambda function"
 }
 
 variable "apigateway_principle" {
@@ -53,7 +63,17 @@ variable "apigateway_principle" {
   description = "AWS service that is going to invoke lambda function"
 }
 
-variable "source_arn" {
+variable "eventbridge_principle" {
   type = string
-  description = "ARN of the source resource granting permission to invoke the Lambda function"
+  description = "AWS service that is going to invoke lambda function"
+}
+
+variable "api_gateway_source_arn" {
+  type = string
+  description = "ARN for the api gateway resource granting permission to invoke the Lambda function"
+}
+
+variable "event_bus_source_arn" {
+  type = string
+  description = "ARN for the event bus resource granting permission to invoke the Lambda function"
 }

@@ -13,7 +13,7 @@ def _writing_to_s3(event_data: dict, bucket_name: str, key: str):
             Key=key
             Body=event_data
         )
-        return {"statusCode": 200, "body": json.dumps(f"Sucessfully wrote data to {bucket_name} s3 bcuket")}
+        return {"statusCode": 200, "body": json.dumps(f"Sucessfully wrote data to {bucket_name} S3 bcuket")}
     except Exception as e:
         logger.error(f"Failed to write data to S3 bucket: {str(e)}")
         raise
@@ -31,5 +31,5 @@ def lambda_handler(event, context):
         logger.info("Successfully processed event")
 
     except Exception as e:
-        logger.error(f"Unhandled error": {str(e)})
+        logger.error(f"Unhandled error: {str(e)}")
         return {"statusCode": 502, "body": json.dumps("Internal Server Error")}

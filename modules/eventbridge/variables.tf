@@ -8,12 +8,7 @@ variable "event_bus_description" {
     description = "Description for event bus"
 }
 
-variable "event_rule_name" {
-    type = string
-    description = "Name of event rule"
-}
-
-variable "event_rule_description" {
+variable "event_bus_rule_description" {
     type = string
     description = "Description of rule event"
 }
@@ -23,7 +18,7 @@ variable "event_bus_rule_name" {
     description = "Name for event bus rule name"
 }
 
-variable "source" {
+variable "eventbridge_source" {
     type = string
     description = "source of where the event came from"
 }

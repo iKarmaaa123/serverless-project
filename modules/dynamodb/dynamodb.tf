@@ -4,6 +4,7 @@ resource "aws_dynamodb_table" "my_aws_dynamodb_table" {
   billing_mode     = var.billing_mode
   stream_enabled   = var.stream_enabled
   stream_view_type = "NEW_AND_OLD_IMAGES"
+  deletion_protection_enabled = false
 
   attribute {
     name =  var.attribute_name

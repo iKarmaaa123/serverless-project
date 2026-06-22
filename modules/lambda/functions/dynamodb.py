@@ -7,7 +7,7 @@ dynamodb_client = boto3.client("dynamodb")
 
 def _validate_request(path):
     try:
-        if path == "/create_user":
+        if path == "/create-user":
             return {"statusCode": 200, "body": json.dumps(f"{path} is a valid path")}
         else:
             return {"statusCode": 400, "body": json.dumps(f"{path} is an invalid path")}
@@ -34,18 +34,16 @@ def _sending_to_dynamodb(user, table_name):
     
 def lambda_handler(event, context):
     try:
-        logger.info(event)
         user_path = event.get("path")
         dynamodb_table_name = "users-table"
-        query_string = event.get("queryStringParameters") or {}
+        query_string = event.get("queryStringParameters", "")
+        my_user = query_string.get("user")
 
         if not query_string:
             return {"statusCode": 400, "body": json.dumps("No path parameters were passed in")}
 
-        my_user = query_string["user"]
-
-        if not my_user:
-            return {"statusCode": 400, "body": json.dumps("Missing user query parameter")}
+        if my_user == "user":
+            return {"statusCode": 400, "body": json.dumps(f"{my_user} is not a valid path parameter")}
 
         validate_path_resp = _validate_request(user_path)
  
