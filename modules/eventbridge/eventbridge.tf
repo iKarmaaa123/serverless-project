@@ -12,10 +12,7 @@ resource "aws_cloudwatch_event_rule" "dynamodb_write_rule" {
     source = [
       var.eventbridge_source
     ]
-
-    detail-type = [
-      var.detail_type
-    ]
+    detail-type = "DynamoDB write event"
   })
 }
 
@@ -30,6 +27,12 @@ resource "aws_pipes_pipe" "dynamodb_streams_eventbride_pipe" {
   role_arn   = var.eventbridge_pipe_role
   source     = var.eventbridge_pipe_source
   target     = var.eventbridge_pipe_target
+  log_configuration {
+    level = "INFO"
+    cloudwatch_logs_log_destination {
+      log_group_arn = var.eventbridge_pipes_log_group
+    }
+  }
 
   source_parameters {
     dynamodb_stream_parameters {
@@ -39,14 +42,20 @@ resource "aws_pipes_pipe" "dynamodb_streams_eventbride_pipe" {
       maximum_retry_attempts     = 3
     }
 
-    # Only capture INSERT and MODIFY events
   filter_criteria {
     filter {
       pattern = jsonencode({
         eventName = ["INSERT", "MODIFY"]
-      })
-    }
+    })
+   }
   }
+ }
+ 
+ target_parameters {
+   eventbridge_event_bus_parameters {
+     source = var.eventbridge_source
+     detail_type = "DynamoDB write event"
+   }
  }
 }
 

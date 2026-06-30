@@ -3,6 +3,11 @@ variable "env" {
     description = "Environment to deploy to"
 }
 
+variable "region" {
+  type = string
+  description = "Region to deploy resources to"
+}
+
 variable "api_gateway_name" {
     type = string
     description = "Name of api gateway"

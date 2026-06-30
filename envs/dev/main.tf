@@ -18,9 +18,10 @@ module "iam" {
     s3_policy_name = var.s3_policy_name
     eventbridge_policy_name = var.eventbridge_policy_name
     dynamodb_table_arn = module.dynamodb.dynamodb_table_arn
+    dynamodb_table_stream_arn = module.dynamodb.dynamodb_stream_arn
     s3_bucket_arn = module.s3.s3_bucket_arn
-    eventbus_arn = module.eventbridge.eventbridge_arn
-    cloudwatch_log_group_arn = var.cloudwatch_log_group_arn
+    eventbus_arn = module.eventbridge.event_bus_arn
+    eventbridge_pipes_cloudwatch_log_group_arn = module.cloudwatch.eventbridge_pipes_cloudwatch_log_group_arn
     dynamodb_streams_policy_name = var.dynamodb_streams_policy_name
 }
 
@@ -40,8 +41,9 @@ module "lambda" {
     apigateway_principle = var.apigateway_principle
     eventbridge_principle = var.eventbridge_principle
     api_gateway_source_arn = module.api-gateway.apigateway_arn
-    event_bus_source_arn = module.eventbridge.eventbridge_arn
+    event_bus_source_arn = module.eventbridge.event_bus_arn
     timeout = var.timeout
+    dead_letter_queue = module.sqs.deadletter_queue_arn
 }
 
 module "dynamodb" {
@@ -70,15 +72,20 @@ module "eventbridge" {
     event_bus_rule_name = var.event_bus_rule_name
     eventbridge_source = var.eventbridge_source
     event_bus_rule_description = var.event_bus_rule_description
-    detail_type = var.detail_type
     target_arn_resource = module.lambda.lambda_function_s3_arn
     eventbridge_pipe_name = var.eventbridge_pipe_name
     eventbridge_pipe_role = module.iam.eventbridge_pipes_role_arn
     eventbridge_pipe_source = module.dynamodb.dynamodb_stream_arn
-    eventbridge_pipe_target = module.eventbridge.eventbridge_arn
+    eventbridge_pipe_target = module.eventbridge.event_bus_arn
+    eventbridge_pipes_log_group = module.cloudwatch.eventbridge_pipes_cloudwatch_log_group_arn
 }
 
 module "s3" {
     source = "../../modules/s3"
     bucket_name = var.bucket_name
+}
+
+module "cloudwatch" {
+    source = "../../modules/cloudwatch"
+    event_bus_arn = module.eventbridge.event_bus_arn
 }

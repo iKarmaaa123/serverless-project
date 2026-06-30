@@ -18,6 +18,9 @@ resource "aws_lambda_function" "lambda_dynamodb" {
   code_sha256   = data.archive_file.lambda_dynamodb.output_base64sha256
   runtime = var.runtime
   timeout = var.timeout
+  dead_letter_config {
+    target_arn = var.dead_letter_queue
+  }
 }
 
 resource "aws_lambda_function" "lambda_s3" {

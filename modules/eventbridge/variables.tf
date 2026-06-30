@@ -23,11 +23,6 @@ variable "eventbridge_source" {
     description = "source of where the event came from"
 }
 
-variable "detail_type" {
-    type = string
-    description = "What type of event has happened"
-}
-
 variable "target_arn_resource" {
     type = string
     description = "Arn for target resource"  
@@ -51,4 +46,9 @@ variable "eventbridge_pipe_source" {
 variable "eventbridge_pipe_target" {
     type = string
     description = "Target for where to route events to"
+}
+
+variable "eventbridge_pipes_log_group" {
+    type = string
+    description = "Arn for log group"
 }

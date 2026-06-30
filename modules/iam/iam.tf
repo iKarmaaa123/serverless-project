@@ -62,7 +62,9 @@ resource "aws_iam_policy" "logging_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = [var.cloudwatch_log_group_arn]
+        Resource = [
+          var.eventbridge_pipes_cloudwatch_log_group_arn
+        ]
       }
     ]
   })
@@ -100,7 +102,7 @@ resource "aws_iam_policy" "dynamodb_streams_policy" {
         "dynamodb:GetShardIterator",
         "dynamodb:ListStreams"
         ]
-        Resource = [var.dynamodb_table_arn]
+        Resource = [var.dynamodb_table_stream_arn]
       }
     ]
   })
@@ -161,7 +163,7 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "dynamodb_streams_attachment" {
+resource "aws_iam_role_policy_attachment" "dynamodb_streams_policy_attachment" {
   role       = aws_iam_role.eventbridge_pipes_role.name
   policy_arn = aws_iam_policy.dynamodb_streams_policy.arn
 }

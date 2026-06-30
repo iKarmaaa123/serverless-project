@@ -55,7 +55,7 @@ def lambda_handler(event, context):
         if validate_sending_to_dynamodb["statusCode"] != 200:
             return validate_sending_to_dynamodb
 
-        return {"statusCode": 200, "body": json.dumps("Event processed successfully")}
+        return {"statusCode": 200, "body": json.dumps("Successfully wrote to DynamoDB table")}
 
     except Exception as e:
         logger.error(f"Unhandled error: {str(e)}")

@@ -77,3 +77,8 @@ variable "event_bus_source_arn" {
   type = string
   description = "ARN for the event bus resource granting permission to invoke the Lambda function"
 }
+
+variable "dead_letter_queue" {
+  type = string
+  description = "Arn for sqs dead letter queue"
+}

@@ -1,11 +1,16 @@
-variable "cloudwatch_log_group_arn" {
+variable "eventbridge_pipes_cloudwatch_log_group_arn" {
   type = string
-  description = "Arn for CloudWatch log group"
+  description = "Arn for eventbridge pipes cloudwatch log group"
 }
 
 variable "dynamodb_table_arn" {
   type = string
   description = "Arn for DynamoDB table"
+}
+
+variable "dynamodb_table_stream_arn" {
+  type = string
+  description = "Arn for DynamoDB table stream"
 }
 
 variable "s3_bucket_arn" {
