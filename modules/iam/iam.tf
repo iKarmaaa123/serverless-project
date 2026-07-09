@@ -63,7 +63,9 @@ resource "aws_iam_policy" "logging_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          var.eventbridge_pipes_cloudwatch_log_group_arn
+          var.eventbridge_pipes_cloudwatch_log_group_arn,
+          var.eventbridge_event_bus_cloudwatch_log_group_arn,
+          "arn:aws:logs:*:*:*"
         ]
       }
     ]
@@ -120,7 +122,7 @@ resource "aws_iam_policy" "s3_policy" {
           "s3:GetObject",
           "s3:PutObject"
         ]
-        Resource = [var.s3_bucket_arn]
+        Resource = ["${var.s3_bucket_arn}/*"]
       }
     ]
   })
@@ -137,7 +139,24 @@ resource "aws_iam_policy" "eventbridge_policy" {
         Action = [
           "events:PutEvents"
         ]
-        Resource = [var.eventbus_arn]
+        Resource = [var.event_bus_arn]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "sqs_policy" {
+  name        = var.sqs_policy_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:SendMessage"
+        ]
+        Resource = [var.sqs_queue_arn]
       }
     ]
   })
@@ -161,6 +180,11 @@ resource "aws_iam_role_policy_attachment" "dynamodb_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   role       = aws_iam_role.lambda_s3_execution_role.name
   policy_arn = aws_iam_policy.s3_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "sqs_policy_attachment" {
+  role       = aws_iam_role.lambda_s3_execution_role.name
+  policy_arn = aws_iam_policy.sqs_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "dynamodb_streams_policy_attachment" {

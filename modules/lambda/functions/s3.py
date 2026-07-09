@@ -21,11 +21,11 @@ def _writing_to_s3(event_data: dict, bucket_name: str, key: str):
 
 def lambda_handler(event, context):
     try:
-        user_data_bucket = "user-data"
-        key = "user_info"
+        user_data_bucket = "user-data-serverless-project"
+        key = "user-info"
 
         writing_to_s3_resp = _writing_to_s3(event, user_data_bucket, key)
-s
+
         if writing_to_s3_resp["statusCode"] != 200:
             return writing_to_s3_resp
 
@@ -33,4 +33,4 @@ s
 
     except Exception as e:
         logger.error(f"Unhandled error: {str(e)}")
-        return {"statusCode": 502, "body": json.dumps("Internal Server Error")}s
+        return {"statusCode": 502, "body": json.dumps("Internal Server Error")}

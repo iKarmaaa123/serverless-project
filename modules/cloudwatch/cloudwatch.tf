@@ -17,13 +17,9 @@ resource "aws_cloudwatch_log_delivery_destination" "cwlogs" {
   delivery_destination_configuration {
     destination_resource_arn = aws_cloudwatch_log_group.eventbridge_event_bus_log_group.arn
   }
-}
+}  
 
 resource "aws_cloudwatch_log_delivery" "cwlogs_info_logs" {
-  delivery_destination_arn = aws_cloudwatch_log_delivery_source.info_logs.arn
-  delivery_source_name     = aws_cloudwatch_log_delivery_destination.cwlogs.arn
-  depends_on = [
-    aws_cloudwatch_log_delivery.s3_info_logs
-  ]
+  delivery_destination_arn = aws_cloudwatch_log_delivery_destination.cwlogs.arn
+  delivery_source_name     = aws_cloudwatch_log_delivery_source.info_logs.name
 }
-

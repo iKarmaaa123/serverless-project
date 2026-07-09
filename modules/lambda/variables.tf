@@ -70,12 +70,12 @@ variable "eventbridge_principle" {
 
 variable "api_gateway_source_arn" {
   type = string
-  description = "ARN for the api gateway resource granting permission to invoke the Lambda function"
+  description = "ARN for the api gateway resource granting permission to invoke the lambda function"
 }
 
-variable "event_bus_source_arn" {
+variable "event_bus_rule_source_arn" {
   type = string
-  description = "ARN for the event bus resource granting permission to invoke the Lambda function"
+  description = "ARN for the event bus rule to grant it permission to invoke the lambda function"
 }
 
 variable "dead_letter_queue" {

@@ -3,6 +3,11 @@ variable "eventbridge_pipes_cloudwatch_log_group_arn" {
   description = "Arn for eventbridge pipes cloudwatch log group"
 }
 
+variable "eventbridge_event_bus_cloudwatch_log_group_arn" {
+  type = string
+  description = "Arn for eventbridge event bus cloudwatch log group"
+}
+
 variable "dynamodb_table_arn" {
   type = string
   description = "Arn for DynamoDB table"
@@ -18,19 +23,24 @@ variable "s3_bucket_arn" {
   description = "Arn for S3 bucket"
 }
 
-variable "eventbus_arn" {
+variable "event_bus_arn" {
   type = string
   description = "Arn for eventbus"
 }
 
+variable "sqs_queue_arn" {
+  type = string
+  description = "Arn for sqs queue"
+}
+
 variable "logging_policy_name" {
   type        = string
-  description = "Policy name for logging IAM policy for lambda execution role"
+  description = "Policy name for logging IAM policy"
 }
 
 variable "dynamodb_policy_name" {
   type        = string
-  description = "Policy name for DynamoDB IAM policy for lambda execution role"
+  description = "Policy name for DynamoDB IAM policy"
 }
 
 variable "dynamodb_streams_policy_name" {
@@ -45,7 +55,12 @@ variable "s3_policy_name" {
 
 variable "eventbridge_policy_name" {
   type        = string
-  description = "Policy name for eventbridge IAM policy for lambda execution role"
+  description = "Policy name for eventbridge IAM policy"
+}
+
+variable "sqs_policy_name" {
+  type        = string
+  description = "Policy name for sqs IAM policy"
 }
 
 variable "lambda_dynamodb_role_name" {

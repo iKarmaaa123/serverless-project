@@ -9,10 +9,8 @@ resource "aws_cloudwatch_event_rule" "dynamodb_write_rule" {
   description = var.event_bus_rule_description
 
   event_pattern = jsonencode({
-    source = [
-      var.eventbridge_source
-    ]
-    detail-type = "DynamoDB write event"
+    source = [var.eventbridge_source]
+    detail-type = ["DynamoDB write event"]
   })
 }
 
@@ -28,7 +26,7 @@ resource "aws_pipes_pipe" "dynamodb_streams_eventbride_pipe" {
   source     = var.eventbridge_pipe_source
   target     = var.eventbridge_pipe_target
   log_configuration {
-    level = "INFO"
+    level = "TRACE"
     cloudwatch_logs_log_destination {
       log_group_arn = var.eventbridge_pipes_log_group
     }
@@ -58,4 +56,3 @@ resource "aws_pipes_pipe" "dynamodb_streams_eventbride_pipe" {
    }
  }
 }
-
