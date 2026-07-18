@@ -18,16 +18,16 @@ resource "aws_api_gateway_method" "post_method" {
 }
 
 resource "aws_api_gateway_integration" "lambda_integration" {
-  rest_api_id = aws_api_gateway_rest_api.my_aws_api_gateway_rest_api.id
-  resource_id = aws_api_gateway_resource.username_aws_api_gateway_resource.id
-  http_method = var.http_method
-  type        = var.integration_input_type
+  rest_api_id             = aws_api_gateway_rest_api.my_aws_api_gateway_rest_api.id
+  resource_id             = aws_api_gateway_resource.username_aws_api_gateway_resource.id
+  http_method             = var.http_method
+  type                    = var.integration_input_type
   integration_http_method = var.http_method
-  uri         = var.uri
+  uri                     = var.uri
 }
 
 resource "aws_api_gateway_deployment" "restapi_deployment" {
-  depends_on = [ aws_api_gateway_integration.lambda_integration ]
+  depends_on  = [aws_api_gateway_integration.lambda_integration]
   rest_api_id = aws_api_gateway_rest_api.my_aws_api_gateway_rest_api.id
 }
 

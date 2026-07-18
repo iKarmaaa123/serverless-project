@@ -36,10 +36,10 @@ resource "aws_pipes_pipe" "dynamodb_streams_eventbride_pipe" {
 
   source_parameters {
     dynamodb_stream_parameters {
-      starting_position                    = var.eventbridge_pipe_starting_position
-      batch_size                           = var.eventbridge_pipe_batch_size
-      maximum_batching_window_in_seconds   = var.eventbridge_pipe_maximum_batching_window_in_seconds
-      maximum_retry_attempts               = var.eventbridge_pipe_maximum_retry_attempts
+      starting_position                  = var.eventbridge_pipe_starting_position
+      batch_size                         = var.eventbridge_pipe_batch_size
+      maximum_batching_window_in_seconds = var.eventbridge_pipe_maximum_batching_window_in_seconds
+      maximum_retry_attempts             = var.eventbridge_pipe_maximum_retry_attempts
     }
 
     filter_criteria {

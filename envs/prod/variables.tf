@@ -344,11 +344,11 @@ variable "lambda_alarm_topic_name" {
 }
 
 variable "protocol" {
-    type = string
-    description = "Protocol for SNS topic subscription"
+  type        = string
+  description = "Protocol for SNS topic subscription"
 }
 
 variable "endpoint" {
-    type = string
-    description = "Endpoint to send sns message to"
+  type        = string
+  description = "Endpoint to send sns message to"
 }

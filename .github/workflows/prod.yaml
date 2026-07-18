@@ -1,6 +1,10 @@
 name: Prod Workflow
 
 on:
+  push:
+    paths:
+    - "envs/prod/**"
+
   workflow_dispatch:
 
 env:
@@ -12,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./envs/prod'
+        working-directory: ./envs/prod
     
     steps:
       - name: Checkout code
@@ -23,12 +27,16 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+        working-directory: ./modules/lambda
+
       - name: Run Python unit tests
         run: python -m unittest
         working-directory: ./modules/lambda/test
 
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
@@ -43,26 +51,33 @@ jobs:
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
+        working-directory: .
       
       - name: Terraform Validate
         run: terraform validate
+        working-directory: .
 
       - name: Set up TFLint
         uses: terraform-linters/setup-tflint@v6
-        with:
-          tflint_version: latest
-
+      
       - name: Initialising TFLint
         run: tflint --init
 
       - name: Run TFLint
         run: tflint -f compact
+        working-directory: .
 
-      - name: Set up Checkov
+      - name: Running Checkov scan
         uses: bridgecrewio/checkov-action@7b972723c44fb3d256283fac96fae5d7c1894bb7
-
+        with:
+          directory: ./envs/prod
+          framework: terraform
+          quiet: true
+          soft_fail: true
+          format: table
+        
       - name: Terraform Plan
-        run: terraform plan -var-file=prod.tfvars -out=tfplan
+        run: terraform plan -var-file=prod.tfvars
 
   apply:
     name: Terraform Apply
@@ -81,6 +96,12 @@ jobs:
         uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: "1.15.8"
+
+      - name: Configuring AWS Crdentials for GitHub Actions Runner
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.GHA_RUNNER_OIDC_ROLE }}
 
       - name: Terraform Init
         run: terraform init

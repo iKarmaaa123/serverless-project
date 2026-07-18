@@ -50,7 +50,7 @@ resource "aws_iam_role" "eventbridge_pipes_role" {
 }
 
 resource "aws_iam_policy" "logging_policy" {
-  name        = var.logging_policy_name
+  name = var.logging_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -72,7 +72,7 @@ resource "aws_iam_policy" "logging_policy" {
 }
 
 resource "aws_iam_policy" "dynamodb_policy" {
-  name        = var.dynamodb_policy_name
+  name = var.dynamodb_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -90,7 +90,7 @@ resource "aws_iam_policy" "dynamodb_policy" {
 }
 
 resource "aws_iam_policy" "dynamodb_streams_policy" {
-  name        = var.dynamodb_streams_policy_name
+  name = var.dynamodb_streams_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -98,10 +98,10 @@ resource "aws_iam_policy" "dynamodb_streams_policy" {
       {
         Effect = "Allow"
         Action = [
-        "dynamodb:DescribeStream",
-        "dynamodb:GetRecords",
-        "dynamodb:GetShardIterator",
-        "dynamodb:ListStreams"
+          "dynamodb:DescribeStream",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator",
+          "dynamodb:ListStreams"
         ]
         Resource = [var.dynamodb_table_stream_arn]
       }
@@ -110,7 +110,7 @@ resource "aws_iam_policy" "dynamodb_streams_policy" {
 }
 
 resource "aws_iam_policy" "s3_policy" {
-  name        = var.s3_policy_name
+  name = var.s3_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -128,7 +128,7 @@ resource "aws_iam_policy" "s3_policy" {
 }
 
 resource "aws_iam_policy" "eventbridge_policy" {
-  name        = var.eventbridge_policy_name
+  name = var.eventbridge_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -145,7 +145,7 @@ resource "aws_iam_policy" "eventbridge_policy" {
 }
 
 resource "aws_iam_policy" "sqs_policy" {
-  name        = var.sqs_policy_name
+  name = var.sqs_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"

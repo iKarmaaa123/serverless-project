@@ -23,8 +23,8 @@ module "iam" {
   eventbridge_pipes_cloudwatch_log_group_arn = module.cloudwatch.eventbridge_pipes_cloudwatch_log_group_arn
   dynamodb_streams_policy_name               = var.dynamodb_streams_policy_name
   dynamodb_table_stream_arn                  = module.dynamodb.dynamodb_stream_arn
-  sqs_policy_name = var.sqs_policy_name
-  sqs_queue_arn = module.sqs.deadletter_queue_arn
+  sqs_policy_name                            = var.sqs_policy_name
+  sqs_queue_arn                              = module.sqs.deadletter_queue_arn
 }
 
 module "lambda" {
@@ -43,7 +43,7 @@ module "lambda" {
   apigateway_principle          = var.apigateway_principle
   eventbridge_principle         = var.eventbridge_principle
   api_gateway_source_arn        = module.api-gateway.apigateway_execution_arn
-  event_bus_rule_source_arn         = module.eventbridge.event_bus_rule_arn
+  event_bus_rule_source_arn     = module.eventbridge.event_bus_rule_arn
   timeout                       = var.timeout
   dead_letter_queue             = module.sqs.deadletter_queue_arn
 }
@@ -68,49 +68,49 @@ module "sqs" {
 }
 
 module "eventbridge" {
-  source                      = "../../modules/eventbridge"
-  event_bus_name              = var.event_bus_name
-  event_bus_description       = var.event_bus_description
-  event_bus_rule_name         = var.event_bus_rule_name
-  eventbridge_source          = var.eventbridge_source
-  eventbridge_detail_type     = var.eventbridge_detail_type
-  event_bus_rule_description  = var.event_bus_rule_description
-  target_arn_resource         = module.lambda.lambda_function_s3_arn
-  eventbridge_pipe_name       = var.eventbridge_pipe_name
-  eventbridge_pipe_role       = module.iam.eventbridge_pipes_role_arn
-  eventbridge_pipe_source     = module.dynamodb.dynamodb_stream_arn
-  eventbridge_pipe_target     = module.eventbridge.event_bus_arn
-  eventbridge_pipes_log_group = module.cloudwatch.eventbridge_pipes_cloudwatch_log_group_arn
-  eventbridge_pipe_log_level  = var.eventbridge_pipe_log_level
-  eventbridge_pipe_starting_position = var.eventbridge_pipe_starting_position
-  eventbridge_pipe_batch_size = var.eventbridge_pipe_batch_size
+  source                                              = "../../modules/eventbridge"
+  event_bus_name                                      = var.event_bus_name
+  event_bus_description                               = var.event_bus_description
+  event_bus_rule_name                                 = var.event_bus_rule_name
+  eventbridge_source                                  = var.eventbridge_source
+  eventbridge_detail_type                             = var.eventbridge_detail_type
+  event_bus_rule_description                          = var.event_bus_rule_description
+  target_arn_resource                                 = module.lambda.lambda_function_s3_arn
+  eventbridge_pipe_name                               = var.eventbridge_pipe_name
+  eventbridge_pipe_role                               = module.iam.eventbridge_pipes_role_arn
+  eventbridge_pipe_source                             = module.dynamodb.dynamodb_stream_arn
+  eventbridge_pipe_target                             = module.eventbridge.event_bus_arn
+  eventbridge_pipes_log_group                         = module.cloudwatch.eventbridge_pipes_cloudwatch_log_group_arn
+  eventbridge_pipe_log_level                          = var.eventbridge_pipe_log_level
+  eventbridge_pipe_starting_position                  = var.eventbridge_pipe_starting_position
+  eventbridge_pipe_batch_size                         = var.eventbridge_pipe_batch_size
   eventbridge_pipe_maximum_batching_window_in_seconds = var.eventbridge_pipe_maximum_batching_window_in_seconds
-  eventbridge_pipe_maximum_retry_attempts = var.eventbridge_pipe_maximum_retry_attempts
-  eventbridge_pipe_filter_event_names = var.eventbridge_pipe_filter_event_names
+  eventbridge_pipe_maximum_retry_attempts             = var.eventbridge_pipe_maximum_retry_attempts
+  eventbridge_pipe_filter_event_names                 = var.eventbridge_pipe_filter_event_names
 }
 
 module "cloudwatch" {
-  source        = "../../modules/cloudwatch"
-  env = var.env
-  event_bus_arn = module.eventbridge.event_bus_arn
-  dynamodb_function_name = module.lambda.lambda_function_dynamodb_name
-  s3_function_name = module.lambda.lambda_function_s3_name
-  eventbridge_pipes_log_group_name = var.eventbridge_pipes_log_group_name
-  lambda_alarm_comparison_operator = var.lambda_alarm_comparison_operator
-  lambda_alarm_evaluation_periods = var.lambda_alarm_evaluation_periods
-  lambda_alarm_namespace = var.lambda_alarm_namespace
-  lambda_alarm_period = var.lambda_alarm_period
-  lambda_error_metric_name = var.lambda_error_metric_name
-  lambda_error_alarm_statistic = var.lambda_error_alarm_statistic
-  lambda_error_alarm_threshold = var.lambda_error_alarm_threshold
-  lambda_error_alarm_description = var.lambda_error_alarm_description
-  lambda_throttle_metric_name = var.lambda_throttle_metric_name
-  lambda_throttle_alarm_statistic = var.lambda_throttle_alarm_statistic
-  lambda_throttle_alarm_threshold = var.lambda_throttle_alarm_threshold
+  source                            = "../../modules/cloudwatch"
+  env                               = var.env
+  event_bus_arn                     = module.eventbridge.event_bus_arn
+  dynamodb_function_name            = module.lambda.lambda_function_dynamodb_name
+  s3_function_name                  = module.lambda.lambda_function_s3_name
+  eventbridge_pipes_log_group_name  = var.eventbridge_pipes_log_group_name
+  lambda_alarm_comparison_operator  = var.lambda_alarm_comparison_operator
+  lambda_alarm_evaluation_periods   = var.lambda_alarm_evaluation_periods
+  lambda_alarm_namespace            = var.lambda_alarm_namespace
+  lambda_alarm_period               = var.lambda_alarm_period
+  lambda_error_metric_name          = var.lambda_error_metric_name
+  lambda_error_alarm_statistic      = var.lambda_error_alarm_statistic
+  lambda_error_alarm_threshold      = var.lambda_error_alarm_threshold
+  lambda_error_alarm_description    = var.lambda_error_alarm_description
+  lambda_throttle_metric_name       = var.lambda_throttle_metric_name
+  lambda_throttle_alarm_statistic   = var.lambda_throttle_alarm_statistic
+  lambda_throttle_alarm_threshold   = var.lambda_throttle_alarm_threshold
   lambda_throttle_alarm_description = var.lambda_throttle_alarm_description
-  lambda_alarm_topic_name = var.lambda_alarm_topic_name
-  protocol = var.protocol
-  endpoint = var.endpoint
+  lambda_alarm_topic_name           = var.lambda_alarm_topic_name
+  protocol                          = var.protocol
+  endpoint                          = var.endpoint
 }
 
 module "s3" {

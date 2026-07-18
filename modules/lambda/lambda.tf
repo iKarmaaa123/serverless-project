@@ -11,23 +11,23 @@ data "archive_file" "lambda_s3" {
 }
 
 resource "aws_lambda_function" "lambda_dynamodb" {
-  filename      = data.archive_file.lambda_dynamodb.output_path
-  function_name = var.dynamodb_lambda_function_name
+  filename         = data.archive_file.lambda_dynamodb.output_path
+  function_name    = var.dynamodb_lambda_function_name
   source_code_hash = data.archive_file.lambda_dynamodb.output_base64sha256
-  role          = var.lambda_dynamodb_function_role
-  handler       = var.dynamodb_function_handler
-  runtime = var.runtime
-  timeout = var.timeout
+  role             = var.lambda_dynamodb_function_role
+  handler          = var.dynamodb_function_handler
+  runtime          = var.runtime
+  timeout          = var.timeout
 }
 
 resource "aws_lambda_function" "lambda_s3" {
-  filename      = data.archive_file.lambda_s3.output_path
-  function_name = var.s3_lambda_function_name
+  filename         = data.archive_file.lambda_s3.output_path
+  function_name    = var.s3_lambda_function_name
   source_code_hash = data.archive_file.lambda_s3.output_base64sha256
-  role          = var.lambda_s3_function_role
-  handler       = var.s3_function_handler
-  runtime = var.runtime
-  timeout = var.timeout
+  role             = var.lambda_s3_function_role
+  handler          = var.s3_function_handler
+  runtime          = var.runtime
+  timeout          = var.timeout
   dead_letter_config {
     target_arn = var.dead_letter_queue
   }
