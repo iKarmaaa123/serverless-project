@@ -1,7 +1,7 @@
 name: Dev Workflow
 
 on:
-  path:
+  paths:
   - "envs/dev/**"
 
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
         python-version: "3.13"
 
     - name: Running Python unit tests
-      runs: python -m unittest
+      run: python -m unittest
       working-directory: ./modules/lambda/test
 
     - name: Start LocalStack
@@ -33,7 +33,7 @@ jobs:
         image-tag: 'latest'
         use-pro: false
       env:
-        LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }
+        LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
 
     - name: Set up tflocal
       run: pip install terraform-local
