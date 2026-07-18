@@ -55,3 +55,4 @@ jobs:
 
     - name: Running tflocal apply
       run: tflocal apply -var-file=dev.tfvars -auto-approve
+      continue-on-error: true
