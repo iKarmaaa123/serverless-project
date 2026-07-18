@@ -1,7 +1,7 @@
 name: Dev Workflow
 
 on:
-  paths:
+  path:
   - "envs/dev/**"
 
   workflow_dispatch:
