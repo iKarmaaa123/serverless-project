@@ -3,7 +3,7 @@ import boto3
 import logging
 
 logger = logging.getLogger(__name__)
-dynamodb_client = boto3.client("dynamodb")
+dynamodb_client = boto3.client("dynamodb", region_name="us-east-1")
 
 def _validate_request(path, query_string, user):
     if path == "":

@@ -3,7 +3,7 @@ import json
 import boto3
 
 logger = logging.getLogger(__name__)
-s3_client = boto3.client('s3')
+s3_client = boto3.client("s3", region_name="us-east-1")
 
 def _writing_to_s3(event_data: dict, bucket_name: str, key: str):
     try:
