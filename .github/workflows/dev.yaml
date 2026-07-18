@@ -36,12 +36,14 @@ jobs:
       uses: LocalStack/setup-localstack@19cb04b7695736b30be27d4673d721086f5d1748
       with:
         image-tag: 'latest'
-        use-pro: false
       env:
         LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
 
     - name: Set up tflocal
       run: pip install terraform-local
+
+    - name: Running tflocal init
+      run: tflocal init
 
     - name: Running tflocal plan
       run: tflocal plan -var-file=dev.tfvars
