@@ -64,7 +64,6 @@ resource "aws_iam_policy" "logging_policy" {
         ]
         Resource = [
           var.eventbridge_pipes_cloudwatch_log_group_arn,
-          var.eventbridge_event_bus_cloudwatch_log_group_arn,
           "arn:aws:logs:*:*:*"
         ]
       }

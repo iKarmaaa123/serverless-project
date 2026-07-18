@@ -9,14 +9,3 @@ provider "aws" {
       }
     }
 }
-
-# terraform {
-#   required_providers {tf
-#     }
-#   }
-#   backend "s3" {
-#     bucket = "mybucket"
-#     key    = "path/to/my/key"
-#     region = "us-east-1"
-#   }
-# }

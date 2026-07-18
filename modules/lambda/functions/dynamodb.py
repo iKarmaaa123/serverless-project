@@ -5,18 +5,18 @@ import logging
 logger = logging.getLogger(__name__)
 dynamodb_client = boto3.client("dynamodb")
 
-def _validate_request(path):
-    try:
-        if path == "/create-user":
-            return {"statusCode": 200, "body": json.dumps(f"{path} is a valid path")}
-        elif path != "/create-user":
-            return {"statusCode": 400, "body": json.dumps(f"{path} is an invalid path")}
-        else:
-            return {"statusCode": 400, "body": json.dumps(f"No {path} was passed in")}
+def _validate_request(path, query_string, user):
+    if path == "":
+        return {"statusCode": 400, "body": json.dumps("No path was passed in")}
 
-    except Exception as e:
-        logger.error(f"Failed to validate request: {str(e)}")
-        raise
+    elif path != "/create-user":
+        return {"statusCode": 400, "body": json.dumps(f"{path} is an invalid path")}
+        
+    elif not query_string:
+        return {"statusCode": 400, "body": json.dumps("No path parameters were passed in")}
+
+    elif not user:
+        return {"statusCode": 400, "body": json.dumps("Invalid path parameter was passed in")}
 
 def _sending_to_dynamodb(user, table_name):
     try:
@@ -38,19 +38,13 @@ def lambda_handler(event, context):
     try:
         user_path = event.get("path", "")
         dynamodb_table_name = "users-table"
-        query_string = event.get("queryStringParameters")
+        query_string = event.get("queryStringParameters", "")
         my_user = query_string.get("user", "")
 
-        if not query_string:
-            return {"statusCode": 400, "body": json.dumps("No path parameters were passed in")}
-
-        if not my_user:
-            return {"statusCode": 400, "body": json.dumps("Either no path parameter was passed or an invalid path parameter was passed in")}
-
-        validate_path_resp = _validate_request(user_path)
- 
-        if validate_path_resp["statusCode"] != 200:
-            return validate_path_resp
+        validate_user_request = _validate_request(user_path, query_string, my_user)
+        
+        if validate_user_request["statusCode"] != 200:
+            return validate_user_request
 
         validate_sending_to_dynamodb = _sending_to_dynamodb(my_user, dynamodb_table_name)
 
@@ -61,4 +55,4 @@ def lambda_handler(event, context):
 
     except Exception as e:
         logger.error(f"Unhandled error: {str(e)}")
-        return {"statusCode": 502, "body": json.dumps("Internal Server Error")}
+        return {"statusCode": 500, "body": json.dumps("Internal Server Error")}

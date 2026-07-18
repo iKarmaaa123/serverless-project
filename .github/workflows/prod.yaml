@@ -1,0 +1,89 @@
+name: Prod Workflow
+
+on:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  validate-and-plan:
+    name: Validate and Plan
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./envs/prod'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Run Python unit tests
+        run: python -m unittest
+        working-directory: ./modules/lambda/test
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Configuring AWS Crdentials for GitHub Actions Runner
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.GHA_RUNNER_OIDC_ROLE }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+      
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Set up TFLint
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: latest
+
+      - name: Initialising TFLint
+        run: tflint --init
+
+      - name: Run TFLint
+        run: tflint -f compact
+
+      - name: Set up Checkov
+        uses: bridgecrewio/checkov-action@v7b972723c44fb3d256283fac96fae5d7c1894bb7
+
+      - name: Terraform Plan
+        run: terraform plan -var-file=prod.tfvars -out=tfplan
+
+  apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: validate-and-plan
+    defaults:
+      run:
+        working-directory: ./envs/prod
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.15.8"
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -var-file=prod.tfvars -auto-approve    
