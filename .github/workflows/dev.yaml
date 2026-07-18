@@ -24,6 +24,10 @@ jobs:
       with:
         python-version: "3.13"
 
+    - name: Install Python dependencies
+      run: pip install -r requirements.txt
+      working-directory: ./modules/lambda
+
     - name: Running Python unit tests
       run: python -m unittest
       working-directory: ./modules/lambda/test
