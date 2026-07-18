@@ -59,7 +59,7 @@ jobs:
         run: tflint -f compact
 
       - name: Set up Checkov
-        uses: bridgecrewio/checkov-action@v7b972723c44fb3d256283fac96fae5d7c1894bb7
+        uses: bridgecrewio/checkov-action@7b972723c44fb3d256283fac96fae5d7c1894bb7
 
       - name: Terraform Plan
         run: terraform plan -var-file=prod.tfvars -out=tfplan

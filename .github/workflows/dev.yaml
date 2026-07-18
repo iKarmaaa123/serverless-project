@@ -29,7 +29,7 @@ jobs:
       working-directory: ./modules/lambda/test
 
     - name: Start LocalStack
-      uses: LocalStack/setup-localstack@v19cb04b7695736b30be27d4673d721086f5d1748
+      uses: LocalStack/setup-localstack@19cb04b7695736b30be27d4673d721086f5d1748
       with:
         image-tag: 'latest'
         use-pro: false
