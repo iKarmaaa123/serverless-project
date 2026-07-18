@@ -3,6 +3,7 @@ from unittest.mock import patch, MagicMock
 import sys
 sys.path.append("../functions")
 from dynamodb import _validate_request, _sending_to_dynamodb
+import boto3
 
 class TestDynamodbLambda(unittest.TestCase):
 

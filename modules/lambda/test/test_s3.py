@@ -4,6 +4,7 @@ import sys
 import json
 sys.path.append("../functions")
 from s3 import _writing_to_s3
+import boto3
 
 class TestS3Lambda(unittest.TestCase):
 
