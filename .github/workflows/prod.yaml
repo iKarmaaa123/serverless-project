@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   plan:
-    name: Validate and Plan
+    name: Terraform Plan
     runs-on: ubuntu-latest
     defaults:
       run:
