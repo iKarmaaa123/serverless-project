@@ -97,9 +97,7 @@ jobs:
     name: Terraform Apply
     needs: plan
     runs-on: ubuntu-latest
-    environment:
-      name: prods
-      deployment: false
+    environment: prod
 
     steps:
       - name: Checkout code
@@ -126,9 +124,7 @@ jobs:
     name: Terraform Destroy
     needs: apply
     runs-on: ubuntu-latest
-    environment:
-      name: prod
-      deployment: false
+    environment: prod
     
     steps:
       - name: Checkout code
