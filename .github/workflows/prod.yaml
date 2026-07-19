@@ -87,7 +87,7 @@ jobs:
     name: Terraform Apply
     runs-on: ubuntu-latest
     environment: prod
-    needs: validate-and-plan
+    needs: plan
     defaults:
       run:
         working-directory: ./envs/prod
