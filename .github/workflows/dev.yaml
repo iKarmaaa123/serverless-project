@@ -7,19 +7,20 @@ on:
 
   workflow_dispatch:
 
-jobs:
-  deploying-to-localstack:
-    name: Deploying to LocalStack
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./envs/dev
+defaults:
+  run:
+    working-directory: ./envs/dev
 
+jobs:
+  python-unit-test:
+    name: Python Unit Tests
+    runs-on: ubuntu-latest
+    
     steps:
-    - name: Running checkout
+    - name: Checkout code
       uses: actions/checkout@v6
 
-    - name: Setting up python
+    - name: Set up Python
       uses: actions/setup-python@v6
       with:
         python-version: "3.13"
@@ -28,9 +29,17 @@ jobs:
       run: pip install -r requirements.txt
       working-directory: ./modules/lambda
 
-    - name: Running Python unit tests
+    - name: Run Python unit tests
       run: python -m unittest
-      working-directory: ./modules/lambda/test
+
+  deploying-to-localstack:
+    name: Deploying to LocalStack
+    needs: python-unit-test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Running checkout
+      uses: actions/checkout@v6
 
     - name: Start LocalStack
       uses: LocalStack/setup-localstack@19cb04b7695736b30be27d4673d721086f5d1748
