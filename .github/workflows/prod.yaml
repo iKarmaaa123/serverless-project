@@ -15,7 +15,7 @@ permissions:
   contents: read 
 
 jobs:
-  validate-and-plan:
+  plan:
     name: Validate and Plan
     runs-on: ubuntu-latest
     defaults:
@@ -71,7 +71,7 @@ jobs:
         run: tflint -f compact
         working-directory: .
 
-      - name: Running Checkov scan
+      - name: Running Checkov Scan
         uses: bridgecrewio/checkov-action@7b972723c44fb3d256283fac96fae5d7c1894bb7
         with:
           directory: ./envs/prod
@@ -111,4 +111,34 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
-        run: terraform apply -var-file=prod.tfvars -auto-approve    
+        run: terraform apply -var-file=prod.tfvars -auto-approve
+
+  destroy:
+    name: Terraform Destroy
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: apply
+    defaults:
+      run:
+        working-directory: ./envs/prod
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.15.8"
+
+      - name: Configuring AWS Crdentials for GitHub Actions Runner
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.GHA_RUNNER_OIDC_ROLE }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy -var-file=prod.tfvars -auto-approve    
