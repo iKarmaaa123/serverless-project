@@ -31,6 +31,7 @@ jobs:
 
     - name: Run Python unit tests
       run: python -m unittest
+      working-directory: ./modules/lambda/tests
 
   deploying-to-localstack:
     name: Deploying to LocalStack
