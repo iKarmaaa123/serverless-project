@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Running checkout
+    - name: Checkout code
       uses: actions/checkout@v6
 
     - name: Start LocalStack
