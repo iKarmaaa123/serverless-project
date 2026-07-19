@@ -22,7 +22,7 @@ jobs:
   python-unit-test:
     name: Python Unit Tests
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v6
@@ -94,8 +94,9 @@ jobs:
     name: Terraform Apply
     needs: plan
     runs-on: ubuntu-latest
-    environment: prod
-    deployment: false
+    environment:
+      name: prods
+      deployment: false
 
     steps:
       - name: Checkout code
@@ -122,8 +123,9 @@ jobs:
     name: Terraform Destroy
     needs: apply
     runs-on: ubuntu-latest
-    environment: prod
-    deployment: false
+    environment:
+      name: prod
+      deployment: false
     
     steps:
       - name: Checkout code
