@@ -52,7 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "s3_lambda_errors" {
   alarm_actions       = [aws_sns_topic.lambda_alarms[count.index].arn]
 
   dimensions = {
-    FunctionName = var.dynamodb_function_name
+    FunctionName = var.s3_function_name
   }
 }
 
