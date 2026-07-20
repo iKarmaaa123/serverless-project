@@ -38,7 +38,7 @@ jobs:
 
     - name: Run Python unit tests
       run: python -m unittest
-      working-directory: ./modules/lambda/test
+      working-directory: ./modules/lambda/tests
 
   plan:
     name: Terraform Plan

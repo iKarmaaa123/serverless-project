@@ -4,6 +4,7 @@ on:
   push:
     paths:
     - "envs/dev/**"
+    - "modules/**"
 
   workflow_dispatch:
 
