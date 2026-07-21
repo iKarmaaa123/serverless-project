@@ -1,11 +1,12 @@
 import json
 import boto3
 import logging
+from typing import Dict
 
 logger = logging.getLogger(__name__)
 dynamodb_client = boto3.client("dynamodb", region_name="us-east-1")
 
-def _validate_request(path, query_string, user):
+def _validate_request(path: str, query_string: Dict[str, str], user: str):
     if path == "":
         return {"statusCode": 400, "body": json.dumps("No path was passed in")}
 
@@ -38,7 +39,7 @@ def lambda_handler(event, context):
     try:
         user_path = event.get("path", "")
         dynamodb_table_name = "users-table"
-        query_string = event.get("queryStringParameters", "")
+        query_string = event.get("queryStringParameters") or {}
         my_user = query_string.get("user", "")
 
         validate_user_request = _validate_request(user_path, query_string, my_user)
