@@ -29,7 +29,6 @@ def _sending_to_dynamodb(user, table_name):
                 }
             }
         )
-        return {"statusCode": 200, "body": json.dumps("Successfully wrote user to dynamodb table")}
 
     except Exception as e:
       logger.error(f"Failed to write item to Dynamodb table: {str(e)}")
