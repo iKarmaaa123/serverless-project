@@ -47,10 +47,7 @@ def lambda_handler(event, context):
         if validate_user_request["statusCode"] != 200:
             return validate_user_request
 
-        validate_sending_to_dynamodb = _sending_to_dynamodb(my_user, dynamodb_table_name)
-
-        if validate_sending_to_dynamodb["statusCode"] != 200:
-            return validate_sending_to_dynamodb
+        _sending_to_dynamodb(my_user, dynamodb_table_name)
 
         return {"statusCode": 200, "body": json.dumps("Successfully wrote to DynamoDB table")}
 
