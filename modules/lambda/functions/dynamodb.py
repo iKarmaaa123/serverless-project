@@ -58,6 +58,5 @@ def lambda_handler(event, context):
         return {"statusCode": 200, "body": json.dumps("Successfully wrote to DynamoDB table")}
 
     except Exception as e:
-        logger.error(f"Unhandled error: {str(e)}")
-        return {"statusCode": 500, "body": json.dumps("Internal Server Error")}
+        logger.error(f"Failed to process event: {str(e)}")
         raise
