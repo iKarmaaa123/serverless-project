@@ -23,11 +23,6 @@ variable "event_bus_arn" {
   description = "Arn for eventbus"
 }
 
-variable "dynamodb_lambda_deadletter_queue_arn" {
-  type        = string
-  description = "Arn for dynamodb lambda deadletter queue"
-}
-
 variable "s3_lambda_deadletter_queue_arn" {
   type        = string
   description = "Arn for s3 lambda deadletter queue"

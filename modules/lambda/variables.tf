@@ -78,11 +78,6 @@ variable "event_bus_rule_source_arn" {
   description = "ARN for the event bus rule to grant it permission to invoke the lambda function"
 }
 
-variable "dynamodb_lambda_dead_letter_queue" {
-  type        = string
-  description = "Arn for sqs dead letter queue"
-}
-
 variable "s3_lambda_dead_letter_queue" {
   type        = string
   description = "Arn for sqs dead letter queue"

@@ -18,9 +18,6 @@ resource "aws_lambda_function" "lambda_dynamodb" {
   handler          = var.dynamodb_function_handler
   runtime          = var.runtime
   timeout          = var.timeout
-  dead_letter_config {
-    target_arn = var.dynamodb_lambda_dead_letter_queue
-  }
 
   environment {
     variables = {

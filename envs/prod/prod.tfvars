@@ -25,7 +25,6 @@ eventbridge_statement_id                            = "AllowEventBridgeInvok"
 invoke_action                                       = "lambda:InvokeFunction"
 apigateway_principle                                = "apigateway.amazonaws.com"
 eventbridge_principle                               = "events.amazonaws.com"
-dynamodb_lambda_deadletter_queue_name               = "dynamodb_lambda_deadletter_queue"
 s3_lambda_deadletter_queue_name                     = "s3_lambda_deadletter_queue"
 delay_seconds                                       = 90
 max_message_size                                    = 2048

@@ -173,11 +173,6 @@ variable "eventbridge_principle" {
   description = "AWS service that is going to invoke lambda function"
 }
 
-variable "dynamodb_lambda_deadletter_queue_name" {
-  type        = string
-  description = "Name of dead letter queue for dynamodb lambda function"
-}
-
 variable "s3_lambda_deadletter_queue_name" {
   type        = string
   description = "Name of dead letter queue for s3 lambda function"

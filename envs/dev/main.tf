@@ -23,33 +23,31 @@ module "iam" {
   eventbridge_pipes_cloudwatch_log_group_arn = module.cloudwatch.eventbridge_pipes_cloudwatch_log_group_arn
   dynamodb_streams_policy_name               = var.dynamodb_streams_policy_name
   sqs_policy_name                            = var.sqs_policy_name
-  dynamodb_lambda_deadletter_queue_arn       = module.sqs.dynamodb_lambda_deadletter_queue_arn
   s3_lambda_deadletter_queue_arn             = module.sqs.s3_lambda_deadletter_queue_arn
   event_bus_arn                              = module.eventbridge.event_bus_arn
 }
 
 module "lambda" {
-  source                            = "../../modules/lambda"
-  lambda_dynamodb_function_role     = module.iam.lambda_dynamodb_execution_iam_role
-  lambda_s3_function_role           = module.iam.lambda_s3_execution_iam_role
-  runtime                           = var.runtime
-  dynamodb_function_handler         = var.dynamodb_function_handler
-  s3_function_handler               = var.s3_function_handler
-  method_type                       = var.method_type
-  dynamodb_lambda_function_name     = var.dynamodb_lambda_function_name
-  s3_lambda_function_name           = var.s3_lambda_function_name
-  apigateway_statement_id           = var.apigateway_statement_id
-  eventbridge_statement_id          = var.eventbridge_statement_id
-  invoke_action                     = var.invoke_action
-  apigateway_principle              = var.apigateway_principle
-  eventbridge_principle             = var.eventbridge_principle
-  api_gateway_source_arn            = module.api-gateway.apigateway_execution_arn
-  timeout                           = var.timeout
-  dynamodb_lambda_dead_letter_queue = module.sqs.dynamodb_lambda_deadletter_queue_arn
-  s3_lambda_dead_letter_queue       = module.sqs.s3_lambda_deadletter_queue_arn
-  event_bus_rule_source_arn         = module.eventbridge.event_bus_rule_arn
-  dynamodb_table_name               = module.dynamodb.dynamodb_table_name
-  bucket_name                       = module.s3.s3_bucket_name
+  source                        = "../../modules/lambda"
+  lambda_dynamodb_function_role = module.iam.lambda_dynamodb_execution_iam_role
+  lambda_s3_function_role       = module.iam.lambda_s3_execution_iam_role
+  runtime                       = var.runtime
+  dynamodb_function_handler     = var.dynamodb_function_handler
+  s3_function_handler           = var.s3_function_handler
+  method_type                   = var.method_type
+  dynamodb_lambda_function_name = var.dynamodb_lambda_function_name
+  s3_lambda_function_name       = var.s3_lambda_function_name
+  apigateway_statement_id       = var.apigateway_statement_id
+  eventbridge_statement_id      = var.eventbridge_statement_id
+  invoke_action                 = var.invoke_action
+  apigateway_principle          = var.apigateway_principle
+  eventbridge_principle         = var.eventbridge_principle
+  api_gateway_source_arn        = module.api-gateway.apigateway_execution_arn
+  timeout                       = var.timeout
+  s3_lambda_dead_letter_queue   = module.sqs.s3_lambda_deadletter_queue_arn
+  event_bus_rule_source_arn     = module.eventbridge.event_bus_rule_arn
+  dynamodb_table_name           = module.dynamodb.dynamodb_table_name
+  bucket_name                   = module.s3.s3_bucket_name
 }
 
 module "dynamodb" {
@@ -63,13 +61,12 @@ module "dynamodb" {
 }
 
 module "sqs" {
-  source                                = "../../modules/sqs"
-  receive_wait_time_seconds             = var.receive_wait_time_seconds
-  max_message_size                      = var.max_message_size
-  message_retention_seconds             = var.message_retention_seconds
-  delay_seconds                         = var.delay_seconds
-  dynamodb_lambda_deadletter_queue_name = var.dynamodb_lambda_deadletter_queue_name
-  s3_lambda_deadletter_queue_name       = var.s3_lambda_deadletter_queue_name
+  source                          = "../../modules/sqs"
+  receive_wait_time_seconds       = var.receive_wait_time_seconds
+  max_message_size                = var.max_message_size
+  message_retention_seconds       = var.message_retention_seconds
+  delay_seconds                   = var.delay_seconds
+  s3_lambda_deadletter_queue_name = var.s3_lambda_deadletter_queue_name
 }
 
 module "eventbridge" {
