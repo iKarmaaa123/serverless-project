@@ -19,8 +19,7 @@ def _validate_request(path: str, query_string: Dict[str, str], user: str):
     elif not user:
         return {"statusCode": 400, "body": json.dumps("Invalid path parameter was passed in")}
     
-    else:
-        return {"statusCode": 200}
+    return {"statusCode": 200}
         
 
 def _sending_to_dynamodb(user, table_name):
