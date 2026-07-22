@@ -155,7 +155,10 @@ resource "aws_iam_policy" "sqs_policy" {
         Action = [
           "sqs:SendMessage"
         ]
-        Resource = [var.sqs_queue_arn]
+        Resource = [
+          var.dynamodb_lambda_deadletter_queue_arn,
+          var.s3_lambda_deadletter_queue_arn
+        ]
       }
     ]
   })

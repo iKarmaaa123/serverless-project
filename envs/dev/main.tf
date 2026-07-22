@@ -22,8 +22,9 @@ module "iam" {
   s3_bucket_arn                              = module.s3.s3_bucket_arn
   eventbridge_pipes_cloudwatch_log_group_arn = module.cloudwatch.eventbridge_pipes_cloudwatch_log_group_arn
   dynamodb_streams_policy_name               = var.dynamodb_streams_policy_name
-  sqs_queue_arn                              = module.eventbridge.event_bus_arn
   sqs_policy_name                            = var.sqs_policy_name
+  dynamodb_lambda_deadletter_queue_arn       = module.sqs.dynamodb_lambda_deadletter_queue_arn
+  s3_lambda_deadletter_queue_arn             = module.sqs.s3_lambda_deadletter_queue_arn
   event_bus_arn                              = module.eventbridge.event_bus_arn
 }
 
@@ -62,12 +63,13 @@ module "dynamodb" {
 }
 
 module "sqs" {
-  source                    = "../../modules/sqs"
-  receive_wait_time_seconds = var.receive_wait_time_seconds
-  max_message_size          = var.max_message_size
-  deadletter_queue_name     = var.deadletter_queue_name
-  message_retention_seconds = var.message_retention_seconds
-  delay_seconds             = var.delay_seconds
+  source                                = "../../modules/sqs"
+  receive_wait_time_seconds             = var.receive_wait_time_seconds
+  max_message_size                      = var.max_message_size
+  message_retention_seconds             = var.message_retention_seconds
+  delay_seconds                         = var.delay_seconds
+  dynamodb_lambda_deadletter_queue_name = var.dynamodb_lambda_deadletter_queue_name
+  s3_lambda_deadletter_queue_name       = var.s3_lambda_deadletter_queue_name
 }
 
 module "eventbridge" {

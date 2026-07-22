@@ -24,7 +24,8 @@ module "iam" {
   dynamodb_streams_policy_name               = var.dynamodb_streams_policy_name
   dynamodb_table_stream_arn                  = module.dynamodb.dynamodb_stream_arn
   sqs_policy_name                            = var.sqs_policy_name
-  sqs_queue_arn                              = module.sqs.deadletter_queue_arn
+  dynamodb_lambda_deadletter_queue_arn       = module.sqs.dynamodb_lambda_deadletter_queue_arn
+  s3_lambda_deadletter_queue_arn             = module.sqs.s3_lambda_deadletter_queue_arn
 }
 
 module "lambda" {
@@ -62,12 +63,13 @@ module "dynamodb" {
 }
 
 module "sqs" {
-  source                    = "../../modules/sqs"
-  receive_wait_time_seconds = var.receive_wait_time_seconds
-  max_message_size          = var.max_message_size
-  deadletter_queue_name     = var.deadletter_queue_name
-  message_retention_seconds = var.message_retention_seconds
-  delay_seconds             = var.delay_seconds
+  source                                = "../../modules/sqs"
+  receive_wait_time_seconds             = var.receive_wait_time_seconds
+  max_message_size                      = var.max_message_size
+  message_retention_seconds             = var.message_retention_seconds
+  delay_seconds                         = var.delay_seconds
+  dynamodb_lambda_deadletter_queue_name = var.dynamodb_lambda_deadletter_queue_name
+  s3_lambda_deadletter_queue_name       = var.s3_lambda_deadletter_queue_name
 }
 
 module "eventbridge" {

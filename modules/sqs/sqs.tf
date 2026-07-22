@@ -1,5 +1,5 @@
 resource "aws_sqs_queue" "dynamodb_lambda_deadletter_queue" {
-  name                      = var.deadletter_queue_name
+  name                      = var.dynamodb_lambda_deadletter_queue_name
   delay_seconds             = var.delay_seconds
   max_message_size          = var.max_message_size
   message_retention_seconds = var.message_retention_seconds
@@ -7,7 +7,7 @@ resource "aws_sqs_queue" "dynamodb_lambda_deadletter_queue" {
 }
 
 resource "aws_sqs_queue" "s3_lambda_deadletter_queue" {
-  name                      = var.deadletter_queue_name
+  name                      = var.s3_lambda_deadletter_queue_name
   delay_seconds             = var.delay_seconds
   max_message_size          = var.max_message_size
   message_retention_seconds = var.message_retention_seconds

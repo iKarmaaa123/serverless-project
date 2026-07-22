@@ -23,9 +23,14 @@ variable "event_bus_arn" {
   description = "Arn for eventbus"
 }
 
-variable "sqs_queue_arn" {
+variable "dynamodb_lambda_deadletter_queue_arn" {
   type        = string
-  description = "Arn for sqs queue"
+  description = "Arn for dynamodb lambda deadletter queue"
+}
+
+variable "s3_lambda_deadletter_queue_arn" {
+  type        = string
+  description = "Arn for s3 lambda deadletter queue"
 }
 
 variable "logging_policy_name" {
