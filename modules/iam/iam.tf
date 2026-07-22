@@ -184,7 +184,12 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "sqs_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "sqs_policy_attachment_dynamodb_lambda" {
+  role       = aws_iam_role.lambda_dynamodb_execution_role.name
+  policy_arn = aws_iam_policy.sqs_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "sqs_policy_attachment_s3_lambda" {
   role       = aws_iam_role.lambda_s3_execution_role.name
   policy_arn = aws_iam_policy.sqs_policy.arn
 }
