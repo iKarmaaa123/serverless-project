@@ -46,7 +46,7 @@ module "lambda" {
   api_gateway_source_arn            = module.api-gateway.apigateway_execution_arn
   event_bus_rule_source_arn         = module.eventbridge.event_bus_rule_arn
   timeout                           = var.timeout
-  dynamodb_lambda_dead_letter_queue = module.sqs.s3_lambda_deadletter_queue_arn
+  dynamodb_lambda_dead_letter_queue = module.sqs.dynamodb_lambda_deadletter_queue_arn
   s3_lambda_dead_letter_queue       = module.sqs.s3_lambda_deadletter_queue_arn
   dynamodb_table_name               = module.dynamodb.dynamodb_table_name
   bucket_name                       = module.s3.s3_bucket_name
