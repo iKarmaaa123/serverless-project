@@ -2,6 +2,7 @@ import logging
 import json
 import boto3
 from typing import Dict
+import os
 
 logger = logging.getLogger(__name__)
 s3_client = boto3.client("s3", region_name="us-east-1")
@@ -22,10 +23,14 @@ def _writing_to_s3(event_data: Dict[str, str], bucket_name: str, key: str):
 
 def lambda_handler(event, context):
     try:
-        user_data_bucket = "user-data-serverless-project"
+        user_data_bucket = os.envrion.get("BUCKET_NAME")
+        if not user_data_bucket:
+            raise ValueError("Cannot find value for BUCKET_NAME environment variable")
+            
         key = "user-info"
 
         _writing_to_s3(event, user_data_bucket, key)
+
         logger.info("Successfully wrote to s3 bucket")
 
     except Exception as e:

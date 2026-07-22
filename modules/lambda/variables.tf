@@ -87,3 +87,13 @@ variable "s3_lambda_dead_letter_queue" {
   type        = string
   description = "Arn for sqs dead letter queue"
 }
+
+variable "dynamodb_table_name" {
+  type        = string
+  description = "Name of dynamodb table"
+}
+
+variable "bucket_name" {
+  type        = string
+  description = "Name of S3 bucket"
+}

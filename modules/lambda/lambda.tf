@@ -21,6 +21,12 @@ resource "aws_lambda_function" "lambda_dynamodb" {
   dead_letter_config {
     target_arn = var.dynamodb_lambda_dead_letter_queue
   }
+
+  environment {
+    variables = {
+      DYNAMODB_TABLE_NAME = var.dynamodb_table_name
+    }
+  }
 }
 
 resource "aws_lambda_function" "lambda_s3" {
@@ -33,6 +39,12 @@ resource "aws_lambda_function" "lambda_s3" {
   timeout          = var.timeout
   dead_letter_config {
     target_arn = var.s3_lambda_dead_letter_queue
+  }
+
+  environment {
+    variables = {
+      BUCKET_NAME = var.bucket_name
+    }
   }
 }
 

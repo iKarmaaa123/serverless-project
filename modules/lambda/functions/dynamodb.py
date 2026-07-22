@@ -2,6 +2,7 @@ import json
 import boto3
 import logging
 from typing import Dict
+import os
 
 logger = logging.getLogger(__name__)
 dynamodb_client = boto3.client("dynamodb", region_name="us-east-1")
@@ -40,16 +41,19 @@ def _sending_to_dynamodb(user, table_name):
 def lambda_handler(event, context):
     try:
         user_path = event.get("path", "")
-        dynamodb_table_name = "users-table"
         query_string = event.get("queryStringParameters") or {}
         my_user = query_string.get("user", "")
+
+        users_table = os.envrion.get("DYNAMODB_TABLE_NAME")
+        if not users_table:
+            raise ValueError("Failed to get value for DYNAMODB_TABLE_NAME enviornment variable")
 
         validate_user_request = _validate_request(user_path, query_string, my_user)
         
         if validate_user_request["statusCode"] != 200:
             return validate_user_request
 
-        _sending_to_dynamodb(my_user, dynamodb_table_name)
+        _sending_to_dynamodb(my_user, users_table)
 
         return {"statusCode": 200, "body": json.dumps("Successfully wrote to DynamoDB table")}
 
