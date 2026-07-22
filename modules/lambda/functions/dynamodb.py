@@ -44,7 +44,7 @@ def lambda_handler(event, context):
         query_string = event.get("queryStringParameters") or {}
         my_user = query_string.get("user", "")
 
-        users_table = os.envrion.get("DYNAMODB_TABLE_NAME")
+        users_table = os.environ.get("DYNAMODB_TABLE_NAME")
         if not users_table:
             raise ValueError("Failed to get value for DYNAMODB_TABLE_NAME enviornment variable")
 

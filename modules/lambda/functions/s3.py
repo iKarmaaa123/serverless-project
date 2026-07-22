@@ -23,10 +23,10 @@ def _writing_to_s3(event_data: Dict[str, str], bucket_name: str, key: str):
 
 def lambda_handler(event, context):
     try:
-        user_data_bucket = os.envrion.get("BUCKET_NAME")
+        user_data_bucket = os.environ.get("BUCKET_NAME")
         if not user_data_bucket:
             raise ValueError("Cannot find value for BUCKET_NAME environment variable")
-            
+
         key = "user-info"
 
         _writing_to_s3(event, user_data_bucket, key)
