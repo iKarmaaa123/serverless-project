@@ -1,4 +1,9 @@
-output "deadletter_queue_arn" {
-  value       = aws_sqs_queue.my_aws_sqs_deadletter_queue.arn
-  description = "Output variable for dead letter queue arn"
+output "dynamodb_lambda_deadletter_queue_arn" {
+  value       = aws_sqs_queue.dynamodb_lambda_deadletter_queue.arn
+  description = "Output of dead letter queue arn for dynamodb lambda"
+}
+
+output "s3_lambda_deadletter_queue_arn" {
+  value       = aws_sqs_queue.dynamodb_lambda_deadletter_queue.arn
+  description = "Output of dead letter queue arn for s3 lambda"
 }

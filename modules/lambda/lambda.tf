@@ -18,6 +18,9 @@ resource "aws_lambda_function" "lambda_dynamodb" {
   handler          = var.dynamodb_function_handler
   runtime          = var.runtime
   timeout          = var.timeout
+  dead_letter_config {
+    target_arn = var.dynamodb_lambda_dead_letter_queue
+  }
 }
 
 resource "aws_lambda_function" "lambda_s3" {
@@ -29,7 +32,7 @@ resource "aws_lambda_function" "lambda_s3" {
   runtime          = var.runtime
   timeout          = var.timeout
   dead_letter_config {
-    target_arn = var.dead_letter_queue
+    target_arn = var.s3_lambda_dead_letter_queue
   }
 }
 
