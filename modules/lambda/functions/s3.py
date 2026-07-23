@@ -34,5 +34,5 @@ def lambda_handler(event, context):
         logger.info("Successfully wrote to s3 bucket")
 
     except Exception as e:
-        logger.error(f"Unhandled error: {str(e)}")
+        logger.error(f"Failed to process event: {str(e)}")
         raise
