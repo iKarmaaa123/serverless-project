@@ -1,5 +1,11 @@
 provider "aws" {
   region = var.region
+
+  default_tags {
+    tags = {
+      Environment = var.env
+    }
+  }
 }
 
 terraform {
@@ -9,11 +15,5 @@ terraform {
     aws = {
       version = "~> 6.55.0"
     }
-  }
-  backend "s3" {
-    bucket       = "serverless-project-tfstate"
-    key          = "statefile/terraform.tfstate"
-    region       = "us-east-1"
-    use_lockfile = true
   }
 }
